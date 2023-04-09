@@ -1,0 +1,3 @@
+node_modules/**/**
+scripts/index.js
+scripts/get-json.js

@@ -8,11 +8,26 @@ function getUrlVars() {
     return vars;
 }
 
-var vars = getUrlVars();
+function displayDoc(json,docuri) {
+  if (json.hasOwnProperty(docuri)) {
+    document.getElementById('no-data').style.display = 'none';
+    document.getElementById('data-received').style.display = 'block';
+    document.getElementById('reader-container').style.display = 'block';
+    document.getElementById('inputs').style.display = 'block';
+    document.getElementById('document-title').innerHTML = json[docuri].name;
+    var url = json[docuri].url;
+    /**
+     * Asynchronously downloads PDF.
+     */
+    pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
+      pdfDoc = pdfDoc_;
+      document.getElementById('page_count').textContent = pdfDoc.numPages;
 
-console.log(getUrlVars());
-
-var url = '/documents/balades_histoire_dabo.pdf';
+      // Initial/first page rendering
+      renderPage(pageNum);
+    });
+  }
+} 
 
 // Loaded via <script> tag, create shortcut to access PDF.js exports.
 var pdfjsLib = window['pdfjs-dist/build/pdf'];
@@ -24,7 +39,6 @@ var pdfDoc = null,
     pageNum = 1,
     pageRendering = false,
     pageNumPending = null,
-    scale = 0.8,
     canvas = document.getElementById('canvas'),
     ctx = canvas.getContext('2d');
 
@@ -38,7 +52,7 @@ function renderPage(num) {
   pdfDoc.getPage(num).then(function(page) {
     var box = document.getElementById('inputs')
     var width = box.offsetWidth;
-    
+
     var viewport = page.getViewport({scale: width / page.getViewport({ scale: 1.0 }).width}); // Math.min(window.innerWidth, window.innerHeight) / page.getViewport({scale: 1.0}).width 
     canvas.height = viewport.height;
     canvas.width = viewport.width;
@@ -101,17 +115,7 @@ function onNextPage() {
 }
 document.getElementById('next').addEventListener('click', onNextPage);
 
-/**
- * Asynchronously downloads PDF.
- */
-pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
-  pdfDoc = pdfDoc_;
-  document.getElementById('page_count').textContent = pdfDoc.numPages;
-
-  // Initial/first page rendering
-  renderPage(pageNum);
-});
-
+// Debounce function
 function debounce(fn, delay) {
   var timer = null;
   return function() {
@@ -124,6 +128,7 @@ function debounce(fn, delay) {
   };
 }
 
+// Resize page
 var resizeTimeout;
 window.addEventListener('resize', debounce(function() {
   if (resizeTimeout) {
@@ -133,3 +138,36 @@ window.addEventListener('resize', debounce(function() {
     renderPage(pageNum);
   });
 },100));
+
+// Get document list
+getJSON('/documents.json', function (error, json) {
+  if (error) console.error(error);
+  var listContainer = document.getElementById('list');
+  var list = document.createElement('ul');
+  for (let key in json) {
+    if (json[key].public) {
+      var link = document.createElement('a');
+      link.href = '/#doc=' + key;
+      link.textContent = json[key].name;
+      link.onclick = function () {
+        displayDoc(json, key)
+      }
+      var item = document.createElement('li');
+      item.appendChild(link);
+      list.appendChild(item);
+    }
+  }
+  listContainer.appendChild(list);
+
+  var vars = getUrlVars();
+  var docuri = '';
+  if (vars.hasOwnProperty('livre')) {
+    docuri = vars.livre;
+  }
+  if (vars.hasOwnProperty('doc')) {
+    docuri = vars.doc;
+  }
+  if (docuri != '') {
+    displayDoc(json, docuri);
+  }
+});

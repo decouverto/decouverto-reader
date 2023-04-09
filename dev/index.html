@@ -37,20 +37,22 @@
     </header>
     <section class="content">
         <h2>Documents</h2>
-        <p class="info" id="no-data">Aucune donnée fournie.</p>
-        <p class="info">Les documents partagés ici sont des propriété de Découverto.</p>
+        <p class="info">Les documents partagés ici sont des propriétés de Découverto.</p>
+        <p class="info" id="no-data">Veuillez choisir un document:</p>
+        <p id="list" style="padding:2em"></p>
+        
         <h3 id="data-received" style="display: none">"<span id="document-title"></span>"</h3>
-        <div class="input-box" id="inputs">
+        <div class="input-box" id="inputs" style="display: none">
             <div class="input-group">
-                <button id="prev" class="btn" >Précédent</button>
-                <button id="next" class="btn" >Suivant</button>
+                <button id="prev" class="btn">Précédent</button>
+                <button id="next" class="btn">Suivant</button>
             </div>
             &nbsp; &nbsp;
             <div class="input-group">
                 <span>Page: <span id="page_num"></span> / <span id="page_count"></span></span>
             </div>
         </div>
-        <div id="reader-container">
+        <div id="reader-container" style="display: none">
             <canvas id="canvas"></canvas>
         </div>
     </section>

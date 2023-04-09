@@ -8,8 +8,6 @@ function getUrlVars() {
     return vars;
 }
 
-var readerContainer = document.getElementById('reader-container');
-
 var vars = getUrlVars();
 
 console.log(getUrlVars());
@@ -40,7 +38,7 @@ function renderPage(num) {
   pdfDoc.getPage(num).then(function(page) {
     var box = document.getElementById('inputs')
     var width = box.offsetWidth;
-    console.log(width)
+    
     var viewport = page.getViewport({scale: width / page.getViewport({ scale: 1.0 }).width}); // Math.min(window.innerWidth, window.innerHeight) / page.getViewport({scale: 1.0}).width 
     canvas.height = viewport.height;
     canvas.width = viewport.width;
@@ -113,3 +111,25 @@ pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
   // Initial/first page rendering
   renderPage(pageNum);
 });
+
+function debounce(fn, delay) {
+  var timer = null;
+  return function() {
+    var context = this,
+        args = arguments;
+    clearTimeout(timer);
+    timer = setTimeout(function() {
+      fn.apply(context, args);
+    }, delay);
+  };
+}
+
+var resizeTimeout;
+window.addEventListener('resize', debounce(function() {
+  if (resizeTimeout) {
+    window.cancelAnimationFrame(resizeTimeout);
+  }
+  resizeTimeout = window.requestAnimationFrame(function() {
+    renderPage(pageNum);
+  });
+},100));

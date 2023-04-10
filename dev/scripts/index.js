@@ -8,27 +8,6 @@ function getUrlVars() {
     return vars;
 }
 
-function displayDoc(json,docuri) {
-  if (json.hasOwnProperty(docuri)) {
-    document.getElementById('no-data').style.display = 'none';
-    document.getElementById('data-received').style.display = 'block';
-    document.getElementById('reader-container').style.display = 'block';
-    document.getElementById('inputs').style.display = 'block';
-    document.getElementById('document-title').innerHTML = json[docuri].name;
-    var url = json[docuri].url;
-    /**
-     * Asynchronously downloads PDF.
-     */
-    pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
-      pdfDoc = pdfDoc_;
-      document.getElementById('page_count').textContent = pdfDoc.numPages;
-
-      // Initial/first page rendering
-      renderPage(pageNum);
-    });
-  }
-} 
-
 // Loaded via <script> tag, create shortcut to access PDF.js exports.
 var pdfjsLib = window['pdfjs-dist/build/pdf'];
 
@@ -138,6 +117,29 @@ window.addEventListener('resize', debounce(function() {
     renderPage(pageNum);
   });
 },100));
+
+
+function displayDoc(json,docuri) {
+  if (json.hasOwnProperty(docuri)) {
+    document.getElementById('no-data').style.display = 'none';
+    document.getElementById('data-received').style.display = 'block';
+    document.getElementById('reader-container').style.display = 'block';
+    document.getElementById('inputs').style.display = 'block';
+    document.getElementById('document-title').innerHTML = json[docuri].name;
+    var url = json[docuri].url;
+    /**
+     * Asynchronously downloads PDF.
+     */
+    pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
+      pdfDoc = pdfDoc_;
+      document.getElementById('page_count').textContent = pdfDoc.numPages;
+
+      // Initial/first page rendering
+      pageNum = 1;
+      renderPage(pageNum);
+    });
+  }
+} 
 
 // Get document list
 getJSON('/documents.json', function (error, json) {

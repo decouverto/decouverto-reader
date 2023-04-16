@@ -8,6 +8,33 @@ function getUrlVars() {
     return vars;
 }
 
+var readerContainer = document.getElementById('reader-container');
+var waitingContainer = document.getElementById('waiting-container');
+
+// Debounce function
+function debounce(fn, delay) {
+  var timer = null;
+  return function() {
+    var context = this,
+        args = arguments;
+    clearTimeout(timer);
+    timer = setTimeout(function() {
+      fn.apply(context, args);
+    }, delay);
+  };
+}
+
+// Loader func
+function loader(loading) {
+  if (loading) {
+    readerContainer.style.display = 'none';
+    waitingContainer.style.display = 'block';
+  } else {
+    readerContainer.style.display = 'block';
+    waitingContainer.style.display = 'none';
+  }
+}
+
 // Loaded via <script> tag, create shortcut to access PDF.js exports.
 var pdfjsLib = window['pdfjs-dist/build/pdf'];
 
@@ -50,6 +77,8 @@ function renderPage(num) {
         // New page rendering is pending
         renderPage(pageNumPending);
         pageNumPending = null;
+      } else {
+        loader(pageRendering);
       }
     });
   });
@@ -94,19 +123,6 @@ function onNextPage() {
 }
 document.getElementById('next').addEventListener('click', onNextPage);
 
-// Debounce function
-function debounce(fn, delay) {
-  var timer = null;
-  return function() {
-    var context = this,
-        args = arguments;
-    clearTimeout(timer);
-    timer = setTimeout(function() {
-      fn.apply(context, args);
-    }, delay);
-  };
-}
-
 // Resize page
 var resizeTimeout;
 window.addEventListener('resize', debounce(function() {
@@ -123,7 +139,7 @@ function displayDoc(json,docuri) {
   if (json.hasOwnProperty(docuri)) {
     document.getElementById('no-data').style.display = 'none';
     document.getElementById('data-received').style.display = 'block';
-    document.getElementById('reader-container').style.display = 'block';
+    readerContainer.style.display = 'block';
     document.getElementById('inputs').style.display = 'block';
     document.getElementById('document-title').innerHTML = json[docuri].name;
     var url = json[docuri].url;
@@ -136,6 +152,7 @@ function displayDoc(json,docuri) {
 
       // Initial/first page rendering
       pageNum = 1;
+      loader(true);
       renderPage(pageNum);
     });
   }
@@ -147,8 +164,7 @@ function createLink(json, key, list) {
       link.textContent = json[key].name;
       link.setAttribute("key", key)
       link.onclick = function () {
-        console.log("key")
-        console.log(link.getAttribute("key"))
+        loader(true);
         displayDoc(json, link.getAttribute("key"));
       }
       var item = document.createElement('li');
@@ -177,6 +193,7 @@ getJSON('/documents.json', function (error, json) {
     docuri = vars.doc;
   }
   if (docuri != '') {
+    loader(true);
     displayDoc(json, docuri);
   }
 });

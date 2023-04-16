@@ -141,6 +141,21 @@ function displayDoc(json,docuri) {
   }
 } 
 
+function createLink(json, key, list) {
+      var link = document.createElement('a');
+      link.href = '/#doc=' + key;
+      link.textContent = json[key].name;
+      link.setAttribute("key", key)
+      link.onclick = function () {
+        console.log("key")
+        console.log(link.getAttribute("key"))
+        displayDoc(json, link.getAttribute("key"));
+      }
+      var item = document.createElement('li');
+      item.appendChild(link);
+      list.appendChild(item);
+}
+
 // Get document list
 getJSON('/documents.json', function (error, json) {
   if (error) console.error(error);
@@ -148,15 +163,7 @@ getJSON('/documents.json', function (error, json) {
   var list = document.createElement('ul');
   for (var key in json) {
     if (json[key].public) {
-      var link = document.createElement('a');
-      link.href = '/#doc=' + key;
-      link.textContent = json[key].name;
-      link.onclick = function () {
-        displayDoc(json, key);
-      }
-      var item = document.createElement('li');
-      item.appendChild(link);
-      list.appendChild(item);
+      createLink(json, key, list)
     }
   }
   listContainer.appendChild(list);

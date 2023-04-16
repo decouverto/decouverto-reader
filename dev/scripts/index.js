@@ -136,6 +136,7 @@ window.addEventListener('resize', debounce(function() {
 
 function displayDoc(json,docuri) {
   if (json.hasOwnProperty(docuri)) {
+    loader(true);
     document.getElementById('no-data').style.display = 'none';
     document.getElementById('data-received').style.display = 'block';
     document.getElementById('reader-container').style.display = 'block';
@@ -151,7 +152,6 @@ function displayDoc(json,docuri) {
 
       // Initial/first page rendering
       pageNum = 1;
-      loader(true);
       renderPage(pageNum);
     });
   }
@@ -163,7 +163,6 @@ function createLink(json, key, list) {
       link.textContent = json[key].name;
       link.setAttribute("key", key)
       link.onclick = function () {
-        loader(true);
         displayDoc(json, link.getAttribute("key"));
       }
       var item = document.createElement('li');

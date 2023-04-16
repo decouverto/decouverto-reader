@@ -8,9 +8,6 @@ function getUrlVars() {
     return vars;
 }
 
-var readerContainer = document.getElementById('reader-container');
-var waitingContainer = document.getElementById('waiting-container');
-
 // Debounce function
 function debounce(fn, delay) {
   var timer = null;
@@ -26,6 +23,8 @@ function debounce(fn, delay) {
 
 // Loader func
 function loader(loading) {
+  var readerContainer = document.getElementById('reader-container');
+  var waitingContainer = document.getElementById('waiting-container');
   if (loading) {
     readerContainer.style.display = 'none';
     waitingContainer.style.display = 'block';
@@ -139,7 +138,7 @@ function displayDoc(json,docuri) {
   if (json.hasOwnProperty(docuri)) {
     document.getElementById('no-data').style.display = 'none';
     document.getElementById('data-received').style.display = 'block';
-    readerContainer.style.display = 'block';
+    document.getElementById('reader-container').style.display = 'block';
     document.getElementById('inputs').style.display = 'block';
     document.getElementById('document-title').innerHTML = json[docuri].name;
     var url = json[docuri].url;

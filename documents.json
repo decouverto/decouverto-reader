@@ -3,5 +3,20 @@
         "public": true,
         "url": "/documents/balades_histoire_dabo.pdf",
         "name": "Livre: Balades dans l'histoire de Dabo"
+    },
+    "conference-culture-alamane.pdf": {
+        "public": true,
+        "url": "/documents/conference_culture_alamane.pdf.pdf",
+        "name": "Conférence: Culture Alamane"
+    },
+    "conference-la-foret": {
+        "public": true,
+        "url": "/documents/conference_la_foret.pdf",
+        "name": "Conférence: La Forêt"
+    },
+    "conference-transport-et-energies": {
+        "public": true,
+        "url": "/documents/conference_transport_et_energies.pdf",
+        "name": "Conférence: Transport et Energies"
     }
 }

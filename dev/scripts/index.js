@@ -139,7 +139,6 @@ function displayDoc(json,docuri) {
     loader(true);
     document.getElementById('no-data').style.display = 'none';
     document.getElementById('data-received').style.display = 'block';
-    document.getElementById('reader-container').style.display = 'block';
     document.getElementById('inputs').style.display = 'block';
     document.getElementById('document-title').innerHTML = json[docuri].name;
     var url = json[docuri].url;

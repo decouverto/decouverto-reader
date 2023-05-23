@@ -18,5 +18,10 @@
         "public": true,
         "url": "/documents/conference_transport_et_energies.pdf",
         "name": "Conférence: Transport et Energies"
+    },
+    "conference-le-loup": {
+        "public": true,
+        "url": "/documents/conference_le_loup.pdf",
+        "name": "Conférence: Le Loup"
     }
 }

@@ -23,5 +23,15 @@
         "public": true,
         "url": "/documents/conference_le_loup.pdf",
         "name": "Conférence: Le Loup"
+    },
+    "conference-le-corbeau": {
+        "public": true,
+        "url": "/documents/conference_le_corbeau.pdf",
+        "name": "Conférence: Le Corbeau"
+    },
+    "conference-livre-lieux-religieux": {
+        "public": true,
+        "url": "/documents/conference_livre_lieux_religieux.pdf",
+        "name": "Conférence: Livre Lieux Religieux"
     }
 }

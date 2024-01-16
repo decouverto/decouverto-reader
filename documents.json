@@ -19,6 +19,11 @@
         "url": "/documents/conference_noel_2023.pdf",
         "name": "Conférence: Noël (2023)"
     },
+    "conference-eau": {
+        "public": true,
+        "url": "/documents/conference_eau.pdf",
+        "name": "Conférence: L'Eau"
+    },
     "conference-transport-et-energies": {
         "public": true,
         "url": "/documents/conference_transport_et_energies.pdf",

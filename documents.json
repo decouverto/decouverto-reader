@@ -43,5 +43,10 @@
         "public": true,
         "url": "/documents/conference_livre_lieux_religieux.pdf",
         "name": "Conférence: Livre Lieux Religieux"
+    },
+    "conference-les-oiseaux": {
+        "public": true,
+        "url": "/documents/conference_les_oiseaux.pdf",
+        "name": "Conférence: Les Oiseaux"
     }
 }
